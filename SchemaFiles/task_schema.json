@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "tasks": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-zA-Z0-9_-]+$": {
+          "type": "object",
+          "properties": {
+            "Completed": { "type": "boolean" },
+            "created": { "type": "string", "format": "date-time" },
+            "details": { "type": "string" },
+            "title": { "type": "string" },
+            "user": { "type": "string", "pattern": "^/users/[a-zA-Z0-9_-]+$" }
+          },
+          "required": ["Completed", "created", "details", "title", "user"]
+        }
+      }
+    }
+  }
+}
