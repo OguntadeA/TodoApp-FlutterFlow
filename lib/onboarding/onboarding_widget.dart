@@ -448,6 +448,10 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                   await currentUserReference!.update(createUsersRecordData(
                     displayName: _model.textController1.text,
                     birthday: _model.datePicked,
+                    hometown: valueOrDefault<String>(
+                      _model.hometownTFTextController.text,
+                      'hometown',
+                    ),
                   ));
 
                   context.goNamed('tasks');
