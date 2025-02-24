@@ -1,15 +1,21 @@
 import '/auth/firebase_auth/auth_util.dart';
+import '/backend/api_requests/api_calls.dart';
 import '/backend/backend.dart';
 import '/components/add_task_widget.dart';
 import '/components/task_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
+import '/index.dart';
 import 'package:flutter/material.dart';
 import 'tasks_model.dart';
 export 'tasks_model.dart';
 
 class TasksWidget extends StatefulWidget {
   const TasksWidget({super.key});
+
+  static String routeName = 'tasks';
+  static String routePath = '/tasks';
 
   @override
   State<TasksWidget> createState() => _TasksWidgetState();
@@ -80,7 +86,7 @@ class _TasksWidgetState extends State<TasksWidget> {
                       },
                       child: Padding(
                         padding: MediaQuery.viewInsetsOf(context),
-                        child: const AddTaskWidget(),
+                        child: AddTaskWidget(),
                       ),
                     );
                   },
@@ -95,13 +101,13 @@ class _TasksWidgetState extends State<TasksWidget> {
           ),
         ),
         body: Padding(
-          padding: const EdgeInsetsDirectional.fromSTEB(0.0, 24.0, 0.0, 24.0),
+          padding: EdgeInsetsDirectional.fromSTEB(0.0, 24.0, 0.0, 24.0),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 0.0, 0.0),
+                padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 0.0, 0.0),
                 child: Text(
                   'Tasks',
                   style: FlutterFlowTheme.of(context).headlineMedium.override(
@@ -144,7 +150,7 @@ class _TasksWidgetState extends State<TasksWidget> {
                       padding: EdgeInsets.zero,
                       scrollDirection: Axis.vertical,
                       itemCount: listViewTasksRecordList.length,
-                      separatorBuilder: (_, __) => const SizedBox(height: 12.0),
+                      separatorBuilder: (_, __) => SizedBox(height: 12.0),
                       itemBuilder: (context, listViewIndex) {
                         final listViewTasksRecord =
                             listViewTasksRecordList[listViewIndex];
@@ -155,7 +161,7 @@ class _TasksWidgetState extends State<TasksWidget> {
                           highlightColor: Colors.transparent,
                           onTap: () async {
                             context.pushNamed(
-                              'details',
+                              DetailsWidget.routeName,
                               queryParameters: {
                                 'taskDoc': serializeParam(
                                   listViewTasksRecord,
@@ -184,7 +190,46 @@ class _TasksWidgetState extends State<TasksWidget> {
                   },
                 ),
               ),
-            ].divide(const SizedBox(height: 12.0)),
+              Text(
+                _model.quoteText,
+                style: FlutterFlowTheme.of(context).bodyMedium.override(
+                      fontFamily: 'Playfair Display',
+                      letterSpacing: 0.0,
+                    ),
+              ),
+              FFButtonWidget(
+                onPressed: () async {
+                  _model.apiResultczi = await ZenQuotesCall.call();
+
+                  if ((_model.apiResultczi?.succeeded ?? true)) {
+                    _model.quoteText = valueOrDefault<String>(
+                      ZenQuotesCall.quote(
+                        (_model.apiResultczi?.jsonBody ?? ''),
+                      ),
+                      'you are doing good',
+                    );
+                    safeSetState(() {});
+                  }
+
+                  safeSetState(() {});
+                },
+                text: 'Button',
+                options: FFButtonOptions(
+                  height: 40.0,
+                  padding: EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
+                  iconPadding:
+                      EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                  color: Color(0xFFDC89DC),
+                  textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                        fontFamily: 'Inter',
+                        color: Colors.white,
+                        letterSpacing: 0.0,
+                      ),
+                  elevation: 0.0,
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+            ].divide(SizedBox(height: 12.0)),
           ),
         ),
       ),
